@@ -1,0 +1,56 @@
+// Source: Appendix B of the v2 implementation brief (authoritative).
+// All "currently" / tenure / countdown strings on the site are computed
+// from this file at runtime — never hardcode a derived value elsewhere.
+
+export const profile = {
+  name: 'Eric Dalton',
+  title: 'Lead Solutions Engineer',
+  employer: 'Salesforce',
+  segment: 'CBS (Commercial Business Segment) — New Logo',
+  verticals: ['Home Services', 'Specialty Contracting', 'Engineering & Construction'],
+  location: 'Atlanta, GA',
+  phone: '859-608-6971',
+  email: 'ewdalton122@gmail.com',
+  linkedin: 'https://www.linkedin.com/in/eric-dalton-se',
+  linkedinDisplay: 'linkedin.com/in/eric-dalton-se',
+  education: {
+    school: 'University of Kentucky',
+    degree: 'BBA, Finance',
+    years: '2013 – 2017',
+  },
+  // ISO dates — every "years at Salesforce" / "months in role" figure is
+  // computed from these, not written as a string anywhere else.
+  tenureStart: '2019-12-01',
+  // Data-currency date for revenue/pipeline figures. Update this each time
+  // revenue.js is refreshed; everything marked "YTD" reads from here.
+  asOf: '2026-09-30',
+  openPipeline: 2250000,
+  lookingFor: 'A Principal Solution Engineer role in ENTR, bringing a New Logo track record, staffing and recruiting vertical depth, a roughly 3× increase in average deal size, and AI-native selling to larger, multi-stakeholder enterprise pursuits.',
+  siteUrl: 'https://edalton122.github.io/eric-dalton/',
+  resumePdf: './Eric-Dalton-Resume.pdf',
+  resumeHtml: './resume.html',
+  // Public-safe build: no links out to customer-specific deployed decks.
+  liveArtifacts: [],
+  // Single flag gating all analytics. Off by default — turn on only once
+  // Eric has picked a privacy-respecting provider (Plausible / GoatCounter /
+  // Cloudflare Web Analytics) and supplied the site id.
+  // TODO(eric): set analytics.enabled = true and fill in `script`/`attrs` once chosen.
+  analytics: { enabled: false, script: null, attrs: {} },
+};
+
+/** Whole years at Salesforce, rounded, for display (e.g. "7 Yrs"). */
+export function yearsAtSalesforce(today = new Date()) {
+  const start = new Date(profile.tenureStart);
+  const months = monthsBetween(start, today);
+  return Math.round(months / 12);
+}
+
+/** Exact months between two dates (whole months, calendar-aware).
+ * Uses UTC getters — see the comment in roles.js's monthsInRole for why
+ * mixing UTC-parsed date strings with local getters causes an off-by-one
+ * month error in negative-UTC-offset zones. */
+export function monthsBetween(start, end) {
+  const s = new Date(start), e = new Date(end);
+  return (e.getUTCFullYear() - s.getUTCFullYear()) * 12 + (e.getUTCMonth() - s.getUTCMonth()) +
+    (e.getUTCDate() >= s.getUTCDate() ? 0 : -1);
+}

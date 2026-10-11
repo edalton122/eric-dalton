@@ -1,0 +1,11 @@
+_preview.png
+_measure.html
+_bc.html
+.DS_Store
+
+# This is the public-safe build. There is no "full" dataset here at all —
+# projects.full.js / wins.full.js are intentionally excluded from this repo.
+# If you ever copy those files in from the internal site, you are mixing
+# the two builds back together. Don't.
+assets/data/projects.full.js
+assets/data/wins.full.js
